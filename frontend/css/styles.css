@@ -1,0 +1,140 @@
+/* Main Styles */
+:root {
+  --bs-body-bg: #f8f9fa;
+  --card-bg: #ffffff;
+  --text-color: #212529;
+  --border-color: #dee2e6;
+  --primary-color: #0d6efd;
+  --secondary-color: #6c757d;
+  --header-bg: #ffffff;
+  --hover-bg: #f8f9fa;
+  --positive-color: #198754;
+  --negative-color: #dc3545;
+  --neutral-color: #6c757d;
+}
+
+[data-bs-theme="dark"] {
+  --bs-body-bg: #212529;
+  --card-bg: #2c3034;
+  --text-color: #e9ecef;
+  --border-color: #495057;
+  --primary-color: #0d6efd;
+  --secondary-color: #adb5bd;
+  --header-bg: #2c3034;
+  --hover-bg: #343a40;
+  --positive-color: #20c997;
+  --negative-color: #ff6b6b;
+  --neutral-color: #adb5bd;
+}
+
+body {
+  background-color: var(--bs-body-bg);
+  color: var(--text-color);
+  transition: all 0.3s ease;
+}
+
+/* Header */
+header {
+  background-color: var(--header-bg);
+  border-color: var(--border-color) !important;
+}
+
+/* Cards */
+.card {
+  background-color: var(--card-bg);
+  border-color: var(--border-color);
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+/* Table */
+.table {
+  color: var(--text-color);
+  border-color: var(--border-color);
+}
+
+.table-striped > tbody > tr:nth-of-type(odd) > * {
+  --bs-table-accent-bg: var(--hover-bg);
+  color: var(--text-color);
+}
+
+.table-hover > tbody > tr:hover > * {
+  --bs-table-accent-bg: var(--hover-bg);
+  color: var(--text-color);
+}
+
+/* Price difference indicators */
+.price-diff-positive {
+  color: var(--positive-color);
+}
+
+.price-diff-negative {
+  color: var(--negative-color);
+}
+
+.price-diff-neutral {
+  color: var(--neutral-color);
+}
+
+/* Badges */
+.recommendation-badge {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+}
+
+.badge-us {
+  background-color: #0d6efd;
+}
+
+.badge-tw {
+  background-color: #dc3545;
+}
+
+.badge-neutral {
+  background-color: #6c757d;
+}
+
+/* Responsive table */
+@media (max-width: 767px) {
+  .table-responsive {
+    border: 0;
+  }
+}
+
+/* Loading animation */
+.loading-spinner {
+  display: inline-block;
+  width: 2rem;
+  height: 2rem;
+  border: 0.25rem solid var(--border-color);
+  border-right-color: var(--primary-color);
+  border-radius: 50%;
+  animation: spinner 1s linear infinite;
+}
+
+@keyframes spinner {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Settings saved notification */
+.settings-saved {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  padding: 0.5rem 1rem;
+  background-color: var(--positive-color);
+  color: white;
+  border-radius: 0.25rem;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 1100;
+}
+
+.settings-saved.show {
+  opacity: 1;
+}

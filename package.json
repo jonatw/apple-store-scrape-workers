@@ -1,0 +1,32 @@
+{
+  "name": "apple-store-scraper-workers",
+  "version": "1.0.0",
+  "description": "Apple Store price comparison tool using Cloudflare Workers",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "wrangler dev",
+    "build:frontend": "vite build frontend --outDir ../dist",
+    "publish": "wrangler publish",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "itty-cors": "^0.3.6",
+    "itty-router": "^4.0.13",
+    "wrangler": "^4.6.0"
+  },
+  "devDependencies": {
+    "@popperjs/core": "^2.11.8",
+    "bootstrap": "^5.3.3",
+    "vite": "^6.2.2"
+  },
+  "overrides": {
+    "esbuild": "^0.25.0",
+    "cookie": "^0.7.0",
+    "sourcemap-codec": "npm:@jridgewell/sourcemap-codec@latest",
+    "rollup-plugin-inject": "npm:@rollup/plugin-inject@latest",
+    "youch": "^3.3.4",
+    "magic-string": "^0.30.5"
+  }
+}
