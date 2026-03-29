@@ -32,7 +32,7 @@ describe('extractProductsFromMetrics', () => {
   it('should extract products from metrics JSON', () => {
     const html = `
       <html>
-      <script id="metrics" type="application/json">
+      <script type="application/json" id="metrics">
         {
           "data": {
             "products": [
@@ -61,7 +61,7 @@ describe('extractProductsFromMetrics', () => {
 
   it('should normalize non-breaking spaces in names', () => {
     const html = `
-      <script id="metrics" type="application/json">
+      <script type="application/json" id="metrics">
         {"data": {"products": [{"name": "iPhone\u00a016 Pro", "price": {"fullPrice": 999}}]}}
       </script>
     `;

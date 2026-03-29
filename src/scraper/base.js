@@ -30,7 +30,7 @@ export function stripRegionSuffix(partNumber) {
 export function extractProductsFromMetrics(html, regionCode) {
   const regionDisplay = REGIONS[regionCode]?.[0] || 'Unknown';
 
-  const metricsMatch = html.match(/<script id="metrics" type="application\/json">(.*?)<\/script>/s);
+  const metricsMatch = html.match(/<script[^>]*id="metrics"[^>]*>(.*?)<\/script>/s);
   if (!metricsMatch) return [];
 
   try {
