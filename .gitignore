@@ -15,8 +15,8 @@ frontend/data/
 .env.test
 .env.production
 
-# Wrangler configuration with sensitive data
-wrangler.toml
+# Wrangler local overrides (if any)
+# wrangler.toml is committed — API_KEY is set via `wrangler secret`, not in the file
 
 # KV storage local development files
 kv-storage/
