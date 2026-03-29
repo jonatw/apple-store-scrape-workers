@@ -89,6 +89,10 @@ export const storeIPhoneDataInR2 = (env, data) => storeJsonInR2(env, 'data/iphon
  * @returns {Promise<boolean>} - 操作是否成功
  */
 export const storeIPadDataInR2 = (env, data) => storeJsonInR2(env, 'data/ipad.json', data);
+export const storeMacDataInR2 = (env, data) => storeJsonInR2(env, 'data/mac.json', data);
+export const storeWatchDataInR2 = (env, data) => storeJsonInR2(env, 'data/watch.json', data);
+export const storeAirPodsDataInR2 = (env, data) => storeJsonInR2(env, 'data/airpods.json', data);
+export const storeTVHomeDataInR2 = (env, data) => storeJsonInR2(env, 'data/tvhome.json', data);
 
 /**
  * 將匯率數據存儲到 R2

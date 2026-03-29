@@ -6,7 +6,7 @@
 import { corsify } from '../middleware/cors';
 import { ApiError } from '../utils/error';
 import { logger } from '../utils/logger';
-import { getIPhoneData, getIPadData, getExchangeRateData, getAllData } from '../storage/kv';
+import { getIPhoneData, getIPadData, getMacData, getWatchData, getAirPodsData, getTVHomeData, getExchangeRateData, getAllData } from '../storage/kv';
 import { updateData, getDataStats } from '../services/dataService';
 
 /**
@@ -88,6 +88,14 @@ export async function handleApiData(request, { env }) {
       data = await getIPhoneData(env);
     } else if (path.endsWith('/ipad.json')) {
       data = await getIPadData(env);
+    } else if (path.endsWith('/mac.json')) {
+      data = await getMacData(env);
+    } else if (path.endsWith('/watch.json')) {
+      data = await getWatchData(env);
+    } else if (path.endsWith('/airpods.json')) {
+      data = await getAirPodsData(env);
+    } else if (path.endsWith('/tvhome.json')) {
+      data = await getTVHomeData(env);
     } else if (path.endsWith('/exchange-rate.json')) {
       data = await getExchangeRateData(env);
     } else {

@@ -22,12 +22,12 @@ export async function getData(env, key) {
   try {
     logger.debug(`Getting data for key: ${key}`);
     const data = await env.APPLE_STORE_DATA.get(key);
-    
+
     if (!data) {
       logger.info(`No data found for key: ${key}`);
       return null;
     }
-    
+
     return JSON.parse(data);
   } catch (error) {
     logger.error(`Error getting data for key ${key}:`, error);
@@ -60,58 +60,46 @@ export async function setData(env, key, data) {
   }
 }
 
-/**
- * 獲取 iPhone 數據
- * @param {Object} env - Worker 環境變量
- * @returns {Promise<Object|null>} - iPhone 數據
- */
+// Per-product-type getters
 export const getIPhoneData = (env) => getData(env, KV_KEYS.IPHONE_DATA);
-
-/**
- * 獲取 iPad 數據
- * @param {Object} env - Worker 環境變量
- * @returns {Promise<Object|null>} - iPad 數據
- */
 export const getIPadData = (env) => getData(env, KV_KEYS.IPAD_DATA);
-
-/**
- * 獲取匯率數據
- * @param {Object} env - Worker 環境變量
- * @returns {Promise<Object|null>} - 匯率數據
- */
+export const getMacData = (env) => getData(env, KV_KEYS.MAC_DATA);
+export const getWatchData = (env) => getData(env, KV_KEYS.WATCH_DATA);
+export const getAirPodsData = (env) => getData(env, KV_KEYS.AIRPODS_DATA);
+export const getTVHomeData = (env) => getData(env, KV_KEYS.TVHOME_DATA);
 export const getExchangeRateData = (env) => getData(env, KV_KEYS.EXCHANGE_RATE);
-
-/**
- * 獲取最後更新時間
- * @param {Object} env - Worker 環境變量
- * @returns {Promise<string|null>} - 最後更新時間
- */
 export const getLastUpdated = (env) => getData(env, KV_KEYS.LAST_UPDATED);
 
 /**
  * 獲取所有數據
- * @param {Object} env - Worker 環境變量
- * @returns {Promise<Object|null>} - 所有數據的組合
  */
 export async function getAllData(env) {
   try {
     logger.debug('Getting all data from KV');
-    
-    const [iphoneData, ipadData, exchangeRateData, lastUpdated] = await Promise.all([
+
+    const [iphoneData, ipadData, macData, watchData, airpodsData, tvhomeData, exchangeRateData, lastUpdated] = await Promise.all([
       getIPhoneData(env),
       getIPadData(env),
+      getMacData(env),
+      getWatchData(env),
+      getAirPodsData(env),
+      getTVHomeData(env),
       getExchangeRateData(env),
       getLastUpdated(env)
     ]);
-    
-    if (!iphoneData && !ipadData) {
+
+    if (!iphoneData && !ipadData && !macData && !watchData && !airpodsData && !tvhomeData) {
       logger.info('No data found in KV');
       return null;
     }
-    
+
     return {
       iphone: iphoneData,
       ipad: ipadData,
+      mac: macData,
+      watch: watchData,
+      airpods: airpodsData,
+      tvhome: tvhomeData,
       exchangeRate: exchangeRateData,
       lastUpdated: lastUpdated?.timestamp || new Date().toISOString()
     };

@@ -44,8 +44,14 @@ const avgPriceDiff = document.getElementById('avg-price-diff');
 const avgPriceDiffFee = document.getElementById('avg-price-diff-fee');
 const feeInfo = document.getElementById('fee-info');
 const searchInput = document.getElementById('search-input');
-const btnIPhone = document.getElementById('btn-iphone');
-const btnIPad = document.getElementById('btn-ipad');
+const productButtons = {
+  iphone: document.getElementById('btn-iphone'),
+  ipad: document.getElementById('btn-ipad'),
+  mac: document.getElementById('btn-mac'),
+  watch: document.getElementById('btn-watch'),
+  airpods: document.getElementById('btn-airpods'),
+  tvhome: document.getElementById('btn-tvhome'),
+};
 const btnThemeToggle = document.getElementById('btn-theme-toggle');
 const settingsForm = document.getElementById('settings-form');
 const exchangeRateInput = document.getElementById('exchange-rate');
@@ -158,26 +164,22 @@ function showSettingsSaved() {
  * Set up event listeners
  */
 function setupEventListeners() {
-  // Product type selection
-  btnIPhone.addEventListener('click', () => {
-    if (currentProductType !== 'iphone') {
-      currentProductType = 'iphone';
-      btnIPhone.classList.add('active');
-      btnIPad.classList.remove('active');
-      loadProductData();
-    }
-  });
-  
-  btnIPad.addEventListener('click', () => {
-    if (currentProductType !== 'ipad') {
-      currentProductType = 'ipad';
-      btnIPad.classList.add('active');
-      btnIPhone.classList.remove('active');
-      loadProductData();
-    }
-  });
-  
-  // Theme toggle
+  // Product type selection — generic handler for all product buttons
+  for (const [type, btn] of Object.entries(productButtons)) {
+    if (!btn) continue;
+    btn.addEventListener('click', () => {
+      if (currentProductType !== type) {
+        currentProductType = type;
+        for (const [, b] of Object.entries(productButtons)) {
+          if (b) b.classList.remove('active');
+        }
+        btn.classList.add('active');
+        loadProductData();
+      }
+    });
+  }
+
+    // Theme toggle
   btnThemeToggle.addEventListener('click', toggleTheme);
   
   // Search

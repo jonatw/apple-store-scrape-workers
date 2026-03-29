@@ -33,6 +33,10 @@ function initializeRoutes() {
   router.get(`${API_PREFIX}/all.json`, handleApiData);
   router.get(`${API_PREFIX}/iphone.json`, handleApiData);
   router.get(`${API_PREFIX}/ipad.json`, handleApiData);
+  router.get(`${API_PREFIX}/mac.json`, handleApiData);
+  router.get(`${API_PREFIX}/watch.json`, handleApiData);
+  router.get(`${API_PREFIX}/airpods.json`, handleApiData);
+  router.get(`${API_PREFIX}/tvhome.json`, handleApiData);
   router.get(`${API_PREFIX}/exchange-rate.json`, handleApiData);
 
   // 開發測試端點

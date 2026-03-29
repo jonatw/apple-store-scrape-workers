@@ -17,14 +17,23 @@ export const DEFAULT_IPHONE_MODELS = ['iphone-16-pro', 'iphone-16', 'iphone-16e'
 // 默認 iPad 型號（如果動態檢測失敗）
 export const DEFAULT_IPAD_MODELS = ['ipad-pro', 'ipad-air', 'ipad', 'ipad-mini'];
 
+// 默認 Mac 型號
+export const DEFAULT_MAC_MODELS = ['mac-mini', 'imac', 'mac-studio', 'macbook-air', 'macbook-pro'];
+
+// 默認 Apple Watch 型號
+export const DEFAULT_WATCH_MODELS = ['apple-watch', 'apple-watch-se', 'apple-watch-ultra'];
+
+// 默認 AirPods 型號
+export const DEFAULT_AIRPODS_MODELS = ['airpods-4', 'airpods-pro-3', 'airpods-max-2'];
+
+// 默認 Apple TV 型號
+export const DEFAULT_TV_MODELS = ['apple-tv-4k'];
+
+// 默認 HomePod 型號
+export const DEFAULT_HOMEPOD_MODELS = ['homepod', 'homepod-mini'];
+
 // 請求延遲（毫秒）
 export const REQUEST_DELAY = 1000;
-
-// 最大重試次數
-export const MAX_RETRIES = 3;
-
-// 調試模式
-export const DEBUG = false;
 
 // API 路由前綴
 export const API_PREFIX = '/api';
@@ -33,6 +42,10 @@ export const API_PREFIX = '/api';
 export const KV_KEYS = {
   IPHONE_DATA: 'iphone_data',
   IPAD_DATA: 'ipad_data',
+  MAC_DATA: 'mac_data',
+  WATCH_DATA: 'watch_data',
+  AIRPODS_DATA: 'airpods_data',
+  TVHOME_DATA: 'tvhome_data',
   EXCHANGE_RATE: 'exchange_rate',
   LAST_UPDATED: 'last_updated'
 };
