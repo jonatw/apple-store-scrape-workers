@@ -29,7 +29,7 @@ if (isLocalDevelopment) {
 // Path to data files
 // For local development, use /api path
 // For production, check if data files are in /data or at root
-const DATA_PATH = isLocalDevelopment ? '/api' : '/data';
+const DATA_PATH = '/api';
 
 // Log configuration for debugging
 console.log(`Using API_BASE_URL: ${API_BASE_URL}`);
@@ -222,51 +222,34 @@ async function loadData() {
   `;
   
   // Try different paths for the data
-  const pathsToTry = [
-    `${API_BASE_URL}${DATA_PATH}/all.json`,  // First try the data directory
-    `${API_BASE_URL}/all.json`,              // Then try the root
-    `${API_BASE_URL}/api/all.json`           // Then try the api path
-  ];
-  
+  const dataUrl = `${API_BASE_URL}${DATA_PATH}/all.json`;
   let success = false;
   let lastError = null;
-  
-  // Try each path until one works
-  for (const path of pathsToTry) {
-    try {
-      console.log(`Trying to fetch data from: ${path}`);
-      
-      // Fetch data from API
-      const response = await fetch(path);
-      
-      if (!response.ok) {
-        console.log(`Path ${path} returned status: ${response.status}`);
-        continue; // Try the next path
-      }
-      
-      // Parse the JSON data
-      allData = await response.json();
-      
-      if (!allData) {
-        console.log(`Path ${path} returned invalid data`);
-        continue; // Try the next path
-      }
-      
-      console.log(`Successfully loaded data from: ${path}`);
-      success = true;
-      
-      // Load initial data
-      loadProductData();
-      break; // Exit the loop since we found a working path
-      
-    } catch (error) {
-      console.log(`Error loading from ${path}:`, error.message);
-      lastError = error;
-      // Continue to the next path
+
+  try {
+    console.log(`Fetching data from: ${dataUrl}`);
+    const response = await fetch(dataUrl);
+
+    if (!response.ok) {
+      throw new Error(`API returned status: ${response.status}`);
     }
+
+    allData = await response.json();
+
+    if (!allData) {
+      throw new Error('API returned invalid data');
+    }
+
+    console.log('Successfully loaded data');
+    success = true;
+    loadProductData();
+
+  } catch (error) {
+    console.error('Error loading data:', error.message);
+    lastError = error;
   }
-  
-  // If all paths failed, show error
+
+  // If loading failed, show error
   if (!success) {
     console.error('All data loading attempts failed:', lastError);
     productTableBody.innerHTML = `
