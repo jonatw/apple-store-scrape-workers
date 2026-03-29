@@ -8,9 +8,9 @@ compatibility_flags = ["nodejs_compat"]
 #   [vars]
 #   API_KEY = "your-dev-key"
 
-# Workers Sites 配置
-[site]
-bucket = "./frontend"
+# Static Assets 配置 (Workers Static Assets, replaces deprecated Workers Sites)
+[assets]
+directory = "./frontend"
 
 # KV 命名空間配置
 [[kv_namespaces]]
