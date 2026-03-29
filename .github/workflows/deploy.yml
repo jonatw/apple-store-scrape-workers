@@ -37,6 +37,8 @@ jobs:
 
       - run: npm ci
 
+      - run: cp wrangler.example.toml wrangler.toml
+
       - uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}

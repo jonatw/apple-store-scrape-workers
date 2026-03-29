@@ -3,41 +3,22 @@ main = "src/index.js"
 compatibility_date = "2024-03-30"
 compatibility_flags = ["nodejs_compat"]
 
-# 環境變量設置
-[vars]
-# 在本地開發中，可以設置API_KEY，或使用 wrangler dev --var API_KEY=xxx
-# 在生產環境中，應該使用 wrangler secret put API_KEY
-API_KEY = "your-api-key-here"
+# API_KEY is set via `wrangler secret put API_KEY` (production)
+# For local dev, copy this file to wrangler.toml and add:
+#   [vars]
+#   API_KEY = "your-dev-key"
 
-# 啟用 Workers Sites 配置
+# Workers Sites 配置
 [site]
 bucket = "./frontend"
 
-# 開發環境設置
-[env.dev]
-workers_dev = true
-
-# 生產環境設置
-[env.production]
-workers_dev = true
-# 如果您有自定義域名，請取消下面的註釋並填入您的域名
-# routes = ["your-custom-domain.com/*"]
-
 # KV 命名空間配置
-# 運行以下命令創建 KV 命名空間並獲取 ID:
-# wrangler kv namespace create APPLE_STORE_DATA
-# wrangler kv namespace create APPLE_STORE_DATA --preview
 [[kv_namespaces]]
 binding = "APPLE_STORE_DATA"
-# 替換為您的KV命名空間ID (運行上述命令後獲取)
-id = "your-kv-namespace-id-here"
-preview_id = "your-preview-kv-namespace-id-here"
+id = "14de583f3a6c49c38b042f9b2aad90f4"
+preview_id = "e50f6ae2f91a42e3968f806689c194bc"
 
 # R2 儲存桶配置
-# 運行以下命令創建 R2 儲存桶:
-# wrangler r2 bucket create apple-store-data
-# 然後配置公開訪問:
-# wrangler r2 bucket create-public-access-config apple-store-data --domain data.your-domain.pages.dev
 [[r2_buckets]]
 binding = "APPLE_STORE_DATA_BUCKET"
 bucket_name = "apple-store-data"

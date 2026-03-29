@@ -15,8 +15,8 @@ frontend/data/
 .env.test
 .env.production
 
-# Wrangler local overrides (if any)
-# wrangler.toml is committed — API_KEY is set via `wrangler secret`, not in the file
+# Wrangler config (local copy from wrangler.example.toml, may contain API_KEY for dev)
+wrangler.toml
 
 # KV storage local development files
 kv-storage/
