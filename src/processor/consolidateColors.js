@@ -20,6 +20,9 @@ export const KNOWN_COLORS = new Set([
   'sage', 'plum', 'bronze', 'titanium',
   'light blue', 'stone', 'cosmic', 'deep', 'ultramarine',
   'desert', 'evergreen', 'citrus', 'berry',
+  // iPhone 17 / Air / 17e colors (2025)
+  'sky', 'light', 'cloud', 'mist', 'soft',
+  'space', 'sand', 'aqua', 'peach',
 ]);
 
 // Words that look like colors but are part of product identity

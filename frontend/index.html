@@ -1,158 +1,231 @@
 <!DOCTYPE html>
-<!-- v3 - 6 product tabs -->
-<html lang="en">
+<html lang="en" data-bs-theme="light">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Apple Store Price Comparison</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/styles.css">
-    <meta name="description" content="Compare Apple product prices between different regions">
-    <link rel="icon" href="assets/favicon.ico">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Compare Apple product prices between Taiwan and the US, helping you decide where to make your purchase">
+  <title>Apple Product Price Comparison</title>
+
+  <!-- App entry point — Vite extracts CSS and adds preload hints in production -->
+  <script type="module" src="./main.js"></script>
+
+  <!--GTM_HEAD-->
+
+  <style>
+    /* Critical CSS — inlined to prevent CLS from async stylesheet loading */
+    @media (min-width: 992px) {
+      .navbar-expand-lg .navbar-collapse { display: flex !important; }
+      .navbar-expand-lg .navbar-toggler { display: none; }
+    }
+    .collapse:not(.show) { display: none; }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding-bottom: 2rem;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      line-height: 1.5;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    .container { width: 100%; padding-right: .75rem; padding-left: .75rem; margin-right: auto; margin-left: auto; }
+    @media (min-width: 576px) { .container { max-width: 540px; } }
+    @media (min-width: 768px) { .container { max-width: 720px; } }
+    @media (min-width: 992px) { .container { max-width: 960px; } }
+    @media (min-width: 1200px) { .container { max-width: 1140px; } }
+    @media (min-width: 1400px) { .container { max-width: 1320px; } }
+
+    .navbar { padding: .5rem 0; }
+    .sticky-top { position: sticky; top: 0; z-index: 1020; }
+    .navbar-brand { font-size: 1.25rem; text-decoration: none; color: rgba(255,255,255,.9); white-space: nowrap; }
+    .navbar-nav { display: flex; list-style: none; margin: 0; padding: 0; }
+    .nav-link { display: block; padding: .5rem 1rem; text-decoration: none; color: rgba(255,255,255,.55); }
+    .nav-link.active { color: rgba(255,255,255,.9); }
+
+    .h3 { font-size: 1.75rem; } .h5 { font-size: 1.25rem; }
+    .display-4 { font-size: 3.5rem; font-weight: 300; line-height: 1.2; }
+    .display-6 { font-size: 2.5rem; font-weight: 300; line-height: 1.2; }
+
+    .loading { display: flex; justify-content: center; padding: 2rem; }
+    .card-text.display-4, .card-text.display-6 { min-height: 2.5rem; }
+
+    @media (max-width: 768px) {
+      .card-title { font-size: 0.9rem; }
+      .card-text.display-4 { font-size: 1.8rem; }
+      .display-6 { font-size: 1.2rem; }
+    }
+  </style>
 </head>
 <body>
-    <div class="container-fluid">
-        <header class="py-3 mb-4 border-bottom">
-            <div class="container d-flex justify-content-between align-items-center">
-                <div class="d-flex align-items-center">
-                    <h1 class="fs-4 fw-bold me-3">Apple Store Comparison</h1>
-                    <div class="btn-group" role="group" aria-label="Product selection">
-                        <button type="button" class="btn btn-outline-primary active" id="btn-iphone">iPhone</button>
-                        <button type="button" class="btn btn-outline-primary" id="btn-ipad">iPad</button>
-                        <button class="btn btn-outline-primary" id="btn-mac">Mac</button>
-                        <button class="btn btn-outline-primary" id="btn-watch">Watch</button>
-                        <button class="btn btn-outline-primary" id="btn-airpods">AirPods</button>
-                        <button class="btn btn-outline-primary" id="btn-tvhome">TV/Home</button>
-                    </div>
-                </div>
-                <div class="d-flex align-items-center">
-                    <button class="btn btn-sm btn-outline-secondary me-2" id="btn-settings" data-bs-toggle="modal" data-bs-target="#settingsModal">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-gear" viewBox="0 0 16 16">
-                            <path d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492zM5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0z"/>
-                            <path d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52l-.094-.319zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115l.094-.319z"/>
-                        </svg>
-                    </button>
-                    <button class="btn btn-sm btn-outline-secondary" id="btn-theme-toggle">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-moon-stars-fill" viewBox="0 0 16 16">
-                            <path d="M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z"/>
-                            <path d="M10.794 3.148a.217.217 0 0 1 .412 0l.387 1.162c.173.518.579.924 1.097 1.097l1.162.387a.217.217 0 0 1 0 .412l-1.162.387a1.734 1.734 0 0 0-1.097 1.097l-.387 1.162a.217.217 0 0 1-.412 0l-.387-1.162A1.734 1.734 0 0 0 9.31 6.593l-1.162-.387a.217.217 0 0 1 0-.412l1.162-.387a1.734 1.734 0 0 0 1.097-1.097l.387-1.162zM13.863.099a.145.145 0 0 1 .274 0l.258.774c.115.346.386.617.732.732l.774.258a.145.145 0 0 1 0 .274l-.774.258a1.156 1.156 0 0 0-.732.732l-.258.774a.145.145 0 0 1-.274 0l-.258-.774a1.156 1.156 0 0 0-.732-.732l-.774-.258a.145.145 0 0 1 0-.274l.774-.258a1.156 1.156 0 0 0 .732-.732l.258-.774z"/>
-                        </svg>
-                    </button>
-                </div>
-            </div>
-        </header>
+  <!--GTM_BODY-->
 
-        <main class="container pb-5">
-            <!-- Search bar -->
-            <div class="row mb-4">
-                <div class="col-md-6 mx-auto">
-                    <div class="input-group">
-                        <span class="input-group-text">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
-                            </svg>
-                        </span>
-                        <input type="text" class="form-control" id="search-input" placeholder="Search products...">
-                    </div>
-                </div>
-            </div>
+  <!-- Navigation Bar -->
+  <nav class="navbar navbar-expand-lg sticky-top" data-bs-theme="dark" style="background-color: #333;">
+    <div class="container">
+      <a class="navbar-brand" href="#">&#63743; Price Comparison</a>
 
-            <!-- Summary cards -->
-            <div class="row mb-4">
-                <div class="col-md-4 mb-3 mb-md-0">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Products</h5>
-                            <p class="card-text display-6" id="product-count">-</p>
-                            <p class="card-text text-muted small" id="last-updated">Last updated: -</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-3 mb-md-0">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Average Price Difference</h5>
-                            <p class="card-text display-6" id="avg-price-diff">-</p>
-                            <p class="card-text text-muted small">Without foreign transaction fee</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">With Transaction Fee</h5>
-                            <p class="card-text display-6" id="avg-price-diff-fee">-</p>
-                            <p class="card-text text-muted small" id="fee-info">Including 1.5% foreign transaction fee</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+      <div class="d-flex align-items-center">
+        <button class="btn btn-link theme-toggle me-3 p-0 border-0" id="theme-toggle" aria-label="Toggle dark mode">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="white" class="bi" viewBox="0 0 16 16" id="theme-icon">
+            <path d="M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z"/>
+          </svg>
+        </button>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-label="Toggle navigation" aria-controls="navbarNav" aria-expanded="false">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      </div>
 
-            <!-- Product table -->
-            <div class="card mb-4">
-                <div class="card-body p-0">
-                    <div class="table-responsive">
-                        <table class="table table-hover table-striped mb-0" id="product-table">
-                            <thead>
-                                <tr>
-                                    <th>Product</th>
-                                    <th>US Price</th>
-                                    <th>TW Price</th>
-                                    <th>Difference</th>
-                                    <th>With Fee</th>
-                                    <th>Recommendation</th>
-                                </tr>
-                            </thead>
-                            <tbody id="product-table-body">
-                                <tr>
-                                    <td colspan="6" class="text-center py-5">Loading data...</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </main>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item"><a class="nav-link active" href="#" data-product="iphone">iPhone</a></li>
+          <li class="nav-item"><a class="nav-link" href="#" data-product="ipad">iPad</a></li>
+          <li class="nav-item"><a class="nav-link" href="#" data-product="mac">Mac</a></li>
+          <li class="nav-item"><a class="nav-link" href="#" data-product="watch">Watch</a></li>
+          <li class="nav-item"><a class="nav-link" href="#" data-product="airpods">AirPods</a></li>
+          <li class="nav-item"><a class="nav-link" href="#" data-product="tvhome">TV & Home</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container my-4">
+    <!-- Title -->
+    <div class="row mb-3">
+      <div class="col-12">
+        <h1 class="h3 mb-2" id="page-title">Apple iPhone Price Comparison</h1>
+        <p class="text-muted">Compare Apple product prices between Taiwan and the US to help you decide where to buy.</p>
+      </div>
     </div>
 
-    <!-- Settings Modal -->
-    <div class="modal fade" id="settingsModal" tabindex="-1" aria-labelledby="settingsModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="settingsModalLabel">Settings</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <!-- Settings Panel -->
+    <div class="row mb-4">
+      <div class="col-12">
+        <div class="card settings-panel">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <h2 class="h5 mb-0">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-gear me-2" viewBox="0 0 16 16">
+                <path d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492zM5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0z"/>
+                <path d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52l-.094-.319zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115l.094-.319z"/>
+              </svg>
+              Settings
+              <span class="badge bg-primary settings-badge" id="settings-changed" style="display: none;">Updated</span>
+            </h2>
+            <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#settingsCollapse" aria-label="Toggle settings">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-down" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>
+              </svg>
+            </button>
+          </div>
+          <div class="collapse" id="settingsCollapse">
+            <div class="card-body">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label for="exchange-rate" class="form-label">Exchange Rate (1 USD = ? TWD)</label>
+                  <div class="input-group">
+                    <input type="number" class="form-control" id="exchange-rate" value="31.5" min="20" max="40" step="0.1">
+                    <span class="input-group-text">TWD</span>
+                  </div>
+                  <div class="form-text" id="exchange-rate-info">Current rate from Cathay Bank (updated during scrape)</div>
                 </div>
-                <div class="modal-body">
-                    <form id="settings-form">
-                        <div class="mb-3">
-                            <label for="exchange-rate" class="form-label">USD/TWD Exchange Rate</label>
-                            <div class="input-group">
-                                <input type="number" class="form-control" id="exchange-rate" step="0.01" min="20" max="50" value="31.5">
-                                <span class="input-group-text">TWD/USD</span>
-                            </div>
-                            <div class="form-text">Current exchange rate between USD and TWD.</div>
-                        </div>
-                        <div class="mb-3">
-                            <label for="transaction-fee" class="form-label">Foreign Transaction Fee</label>
-                            <div class="input-group">
-                                <input type="number" class="form-control" id="transaction-fee" step="0.1" min="0" max="10" value="1.5">
-                                <span class="input-group-text">%</span>
-                            </div>
-                            <div class="form-text">Credit card foreign transaction fee percentage.</div>
-                        </div>
-                    </form>
+                <div class="col-md-6">
+                  <label for="card-fee" class="form-label">Foreign Transaction Fee</label>
+                  <div class="input-group">
+                    <input type="number" class="form-control" id="card-fee" value="1.5" min="0" max="10" step="0.1">
+                    <span class="input-group-text">%</span>
+                  </div>
+                  <div class="form-text">Typical credit card foreign transaction fee is 1.5%</div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="save-settings">Save changes</button>
-                </div>
+              </div>
             </div>
+          </div>
         </div>
+      </div>
     </div>
 
-    <!-- Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" nonce="MzE5NjE1MjMwNiw0MjEzMTY1NDU5"></script>
-    <script src="js/main.js" nonce="MzE5NjE1MjMwNiw0MjEzMTY1NDU5"></script>
+    <!-- Summary Cards -->
+    <div class="row mb-4">
+      <div class="col-md-3 col-6 mb-3 mb-md-0">
+        <div class="card h-100">
+          <div class="card-body text-center p-2 p-md-3">
+            <h3 class="card-title h5">Products</h3>
+            <p class="card-text display-4" id="total-products">-</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 col-6 mb-3 mb-md-0">
+        <div class="card h-100">
+          <div class="card-body text-center p-2 p-md-3">
+            <h3 class="card-title h5">Avg. Difference</h3>
+            <p class="card-text display-4" id="avg-diff">-</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 col-6">
+        <div class="card h-100">
+          <div class="card-body text-center p-2 p-md-3">
+            <h3 class="card-title h5">With Fee</h3>
+            <p class="card-text display-4" id="avg-diff-with-fee">-</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 col-6">
+        <div class="card h-100">
+          <div class="card-body text-center p-2 p-md-3">
+            <h3 class="card-title h5">Last Updated</h3>
+            <p class="card-text display-6" id="last-updated">-</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Product Table -->
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <h2 class="h5 mb-0">Product Details</h2>
+            <div>
+              <label for="product-search" class="visually-hidden">Search products</label>
+              <input type="text" class="form-control form-control-sm" id="product-search" placeholder="Search products...">
+            </div>
+          </div>
+          <div class="card-body p-0">
+            <div class="table-responsive table-fixed-header">
+              <table class="table table-striped table-hover mb-0" id="products-table">
+                <thead>
+                  <tr>
+                    <th scope="col">Product</th>
+                    <th scope="col">US (USD)</th>
+                    <th scope="col" class="d-none d-md-table-cell">US+Fee (TWD)</th>
+                    <th scope="col">TW (TWD)</th>
+                    <th scope="col">Diff</th>
+                    <th scope="col" class="d-none d-md-table-cell">Rec.</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td colspan="6" class="loading">
+                      <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="container text-center">
+    <p>
+      <small>
+        Data source: Apple official website. This site is not affiliated with Apple Inc.
+        Automatically updated via <a href="https://github.com/jonatw/apple-store-scrape-workers" target="_blank">apple-store-scrape-workers</a>.
+      </small>
+    </p>
+  </footer>
 </body>
 </html>
