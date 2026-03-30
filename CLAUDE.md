@@ -101,7 +101,9 @@ Frontend (served from dist/ via Workers Static Assets)
 | `frontend/main.js` | Vite entry: imports SCSS + Bootstrap JS + app code |
 | `frontend/scss/custom-bootstrap.scss` | Tree-shaken Bootstrap SCSS (only used modules) |
 | `frontend/css/styles.css` | App-specific styles (price colors, theme toggle) |
-| `vite.frontend.config.js` | Vite config for frontend build → `dist/` |
+| `vite.frontend.config.js` | Vite config for frontend build → `dist/` (includes GTM injection plugin) |
+| `frontend/assets/robots.txt` | Crawl rules + sitemap pointer (Cloudflare may append AI bot directives) |
+| `frontend/assets/sitemap.xml` | All product category URLs for search engines |
 
 ### Scraper Strategy
 

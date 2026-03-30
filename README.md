@@ -101,7 +101,7 @@ GitHub Actions automatically runs tests and deploys on push to `main`.
 
 **Required GitHub Secrets:** `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`
 
-**Optional GitHub Secret:** `VITE_GTM_ID` — set to your Google Tag Manager container ID (e.g. `GTM-XXXXXXXX`) to inject analytics at build time. If not set, no analytics code is included in the build.
+**Optional GitHub Secret:** `VITE_GTM_ID` — see [Analytics](#analytics-optional) section.
 
 ## API Endpoints
 
@@ -152,7 +152,7 @@ frontend/
   main.js                     # Vite entry: SCSS + Bootstrap JS + app code
   scss/custom-bootstrap.scss  # Tree-shaken Bootstrap (only used modules)
   css/styles.css              # App-specific styles
-  assets/                     # favicon, logo
+  assets/                     # favicon, logo, robots.txt, sitemap.xml
 tests/                        # Vitest unit tests (65 tests)
 dist/                         # Vite build output (served by Worker)
 vite.frontend.config.js       # Vite config for frontend build
@@ -194,6 +194,28 @@ Prices are compared in **TWD** (New Taiwan Dollar):
    - `> +2%` → "Buy in US" (Taiwan is more expensive)
    - `< -2%` → "Buy in Taiwan" (Taiwan is cheaper)
    - Otherwise → "Similar"
+
+## SEO & Analytics
+
+### Crawlability
+- `robots.txt` — allows all crawlers, points to sitemap
+- `sitemap.xml` — lists all 7 product category URLs with hourly `changefreq`
+- Open Graph + Twitter Card meta tags for social sharing
+- JSON-LD `WebApplication` schema for AI crawlers (ChatGPT, Perplexity, Google AI Overview)
+- `/api/*.json` endpoints return clean JSON, directly consumable by AI agents
+
+### Analytics (optional)
+Google Tag Manager is injected at build time via `VITE_GTM_ID` environment variable. This keeps tracking code out of the open-source codebase — forks deploy without any analytics unless they configure their own.
+
+To enable:
+1. Set GitHub Secret `VITE_GTM_ID` = your GTM container ID (e.g. `GTM-XXXXXXXX`)
+2. Configure GA4 inside GTM (Tag → GA4 Configuration → Measurement ID → All Pages trigger)
+3. CI build injects GTM with deferred loading (zero PageSpeed impact)
+
+### Cloudflare AI Bot Settings
+Cloudflare may inject `Content-Signal` directives and AI bot blocks into `robots.txt`. To allow AI crawlers:
+1. Cloudflare Dashboard → `your-domain` → **Security** → **Bots** → **AI Scrapers and Crawlers**
+2. Allow the bots you want (GPTBot, ClaudeBot, Google-Extended, etc.)
 
 ## License
 
