@@ -39,6 +39,10 @@ jobs:
 
       - run: cp wrangler.example.toml wrangler.toml
 
+      - run: npm run build:frontend
+        env:
+          VITE_GTM_ID: ${{ secrets.VITE_GTM_ID }}
+
       - uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}

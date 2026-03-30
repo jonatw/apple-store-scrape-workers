@@ -2,6 +2,7 @@ name = "apple-store-scraper"
 main = "src/index.js"
 compatibility_date = "2024-03-30"
 compatibility_flags = ["nodejs_compat"]
+workers_dev = false
 
 # API_KEY is set via `wrangler secret put API_KEY` (production)
 # For local dev, copy this file to wrangler.toml and add:
@@ -10,7 +11,7 @@ compatibility_flags = ["nodejs_compat"]
 
 # Static Assets 配置 (Workers Static Assets, replaces deprecated Workers Sites)
 [assets]
-directory = "./frontend"
+directory = "./dist"
 
 # KV 命名空間配置
 [[kv_namespaces]]
@@ -24,6 +25,11 @@ binding = "APPLE_STORE_DATA_BUCKET"
 bucket_name = "apple-store-data"
 preview_bucket_name = "apple-store-data-dev"
 
-# Cron 觸發器 (每天午夜 UTC 執行)
+# Custom Domain (需要 domain 在同一個 Cloudflare account)
+[[routes]]
+pattern = "apple.av8r.tw"
+custom_domain = true
+
+# Cron 觸發器 (每小時整點執行)
 [triggers]
-crons = ["0 0 * * *"]
+crons = ["0 * * * *"]
